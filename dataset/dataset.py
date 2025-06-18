@@ -114,3 +114,27 @@ class AsapMixedDatasetForRegression(Dataset):
 
     def __len__(self):
         return len(self.dataset)
+    
+class AsapDatasetForBaseline(Dataset):
+    def __init__(self, dataset_path, prompt_id, train : bool = True) -> None:
+        self.dataset = list()
+        self.label = list()
+        self.label_scaler = {"1" : 10, "2" : 5, "3" : 3, "4" : 3, "5" : 4, "6" : 4, "7" : 30, "8" : 60}
+        self.label_min = {"1" : 2, "2" : 1, "3" : 0, "4" : 0, "5" : 0, "6" : 0, "7" : 0, "8" : 0}
+        if train:
+            with open(f"{dataset_path}/{prompt_id}_train.pk", 'rb') as f:
+                dataset = pickle.load(f)
+                self.dataset = [data["content_text"] for data in dataset]
+                self.label = [(int(data["score"]) - self.label_min[str(data["prompt_id"])]) / self.label_scaler[str(data["prompt_id"])] for data in dataset]
+                print(f"prompt_id {prompt_id}'s max label : {max(self.label)}")
+        else:
+            with open(f"{dataset_path}/{prompt_id}_test.pk", 'rb') as f:
+                dataset = pickle.load(f)
+                self.dataset = [data["content_text"] for data in dataset]
+                self.label = [int(data["score"]) for data in dataset]
+
+    def __getitem__(self, index):
+        return self.dataset[index], self.label[index]
+
+    def __len__(self):
+        return len(self.dataset)

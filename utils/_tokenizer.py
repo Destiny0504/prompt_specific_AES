@@ -16,3 +16,8 @@ def load_tokenizer(model_name: str = "microsoft/deberta-v3-base"):
             "[Prompt 8]",
         ],
     )
+def load_baseline_tokenizer(model_name: str = "google-bert/bert-base-uncased"):
+    return transformers.BertTokenizer.from_pretrained(
+        model_name,
+        pad_token="[PAD]"
+    )

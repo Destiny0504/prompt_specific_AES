@@ -118,4 +118,26 @@ class EFL_scorer_convolution(nn.Module):
         # score = torch.sigmoid(self.scorer(cls_feature))
         score = self.scorer(cls_feature)
 
-        return score, cls_feature, prompt_feature
+        return score, cls_feature, 
+
+class R2Bert(nn.Module):
+    def __init__(
+        self, model_name: str = "google-bert/bert-base-uncased", drop: float = 0.0):
+        super(R2Bert, self).__init__()
+        self.pretrained_model = transformers.BertModel.from_pretrained(model_name)
+
+        # AES scorer
+        self.scorer = nn.Sequential(
+            nn.Linear(in_features=768, out_features=768),
+            nn.Dropout(p = drop, inplace=False), 
+            nn.Linear(in_features=768, out_features=1),
+        )
+
+    def forward(self, batch_x):
+        model_predict = self.pretrained_model(**batch_x)
+        
+        cls_feature = model_predict.last_hidden_state[:, 0, :]
+        
+        score = torch.sigmoid(self.scorer(cls_feature))
+
+        return score

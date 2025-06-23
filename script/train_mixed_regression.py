@@ -78,7 +78,7 @@ def get_args():
     )
     parser.add_argument("--save_step", default=2000, help="Saving intervals", type=int)
     parser.add_argument("--dataset_path", default="./data/learning-agency-lab-automated-essay-scoring-2/train.csv", help="trainingset's path", type=str)
-    parser.add_argument("--supervise_con_on_cls", action="store_true", default=False)
+    parser.add_argument("--supervise_contrastive_on_cls", action="store_true", default=False)
     
     return parser.parse_args()
 
@@ -182,7 +182,7 @@ def main(args):
             # loss += dataset_label_loss_fn(prompt_feature.view(-1, 8), dataset_label.view(-1))
             loss += utils.margin_loss(score.squeeze(), target.squeeze())
 
-            if args.supervise_con_on_cls:
+            if args.supervise_contrastive_on_cls:
                         
             # loss = score_loss_fn(cls_output.view(-1), target.view(-1))
                 supervised_contrative_loss = utils.supervised_contrative_loss(cls_feature, dataset_label.view(-1), tau=args.tau)

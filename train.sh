@@ -48,7 +48,7 @@
 #     --accumulation_step 16 \
 #     --start_log 70000 \
 #     --save_step 100 \
-#     --supervise_con_on_cls \
+#     --supervise_contrastive_on_cls \
 #     --gpu 0
 
 # for prompt_id in 1 2 3 4 5 6 7 8

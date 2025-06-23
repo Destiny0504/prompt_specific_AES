@@ -1,1 +1,2 @@
 from model.score_classifier import EFL_score_classifier, EFL_scorer, R2Bert
+from model.doc_tok_seg import DocumentBertScoringModel

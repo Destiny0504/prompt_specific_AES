@@ -44,8 +44,7 @@ if __name__ == "__main__":
     # initialize arguments
     parser = argparse.ArgumentParser()
     args = _initialize_arguments(parser)
-    print(args)
-    exit()
+
     # load data
     test = load_asap_data(args.dataset_path, "test", args.test_id)
     set_seed(args.seed)
